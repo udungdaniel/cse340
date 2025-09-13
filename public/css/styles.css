@@ -4,3 +4,149 @@
 *:after {
   box-sizing: border-box;
 }
+
+/* ==========================
+   Base Styles (Mobile First)
+   ========================== */
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  line-height: 1.5;
+  color: #222;
+  background: #fff;
+}
+
+header, nav, main, footer {
+  padding: 1rem;
+}
+
+header img {
+  max-width: 150px;
+}
+
+/* Navigation */
+nav ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+nav a {
+  text-decoration: none;
+  color: #004080;
+  padding: 0.5rem 1rem;
+  display: block;
+}
+
+nav a:hover {
+  background: #004080;
+  color: #fff;
+  border-radius: 5px;
+}
+
+/* Hero Section */
+.hero {
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.hero img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.hero-text {
+  padding: 1rem;
+}
+
+.hero-text h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.hero-text p {
+  margin-bottom: 1rem;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.7rem 1.5rem;
+  background: #004080;
+  color: #fff;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+.btn:hover {
+  background: #002850;
+}
+
+/* Features */
+.features {
+  padding: 1rem;
+}
+
+.features h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.features ul {
+  list-style: none;
+  padding: 0;
+  text-align: center;
+}
+
+.features li {
+  margin: 0.5rem 0;
+  font-size: 1.1rem;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  background: #f1f1f1;
+  padding: 1rem;
+  margin-top: 2rem;
+  font-size: 0.9rem;
+}
+
+/* ==========================
+   Larger Screens
+   ========================== */
+@media (min-width: 768px) {
+  nav ul {
+    flex-direction: row;
+    justify-content: center;
+    gap: 2rem;
+  }
+
+  .hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: left;
+    gap: 2rem;
+  }
+
+  .hero img {
+    width: 55%;
+  }
+
+  .hero-text {
+    width: 40%;
+  }
+
+  .hero-text h1 {
+    font-size: 2.5rem;
+  }
+
+  main {
+    max-width: 1200px;
+    margin: auto;
+  }
+}

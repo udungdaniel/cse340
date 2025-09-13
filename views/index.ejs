@@ -1,1 +1,34 @@
-<h1>Daniel Udung</h1>
+<!DOCTYPE html>
+<html lang="en">
+<%- include('./partials/head') %>
+
+    <body>
+        <%- include('./partials/header') %>
+            <%- include('./partials/navigation') %>
+
+                <main>
+                    <!-- Hero Section -->
+                    <section class="hero">
+                        <img src="../public/images/vehicles/escalade.jpg" alt="CSE Motors Featured Car">
+                        <div class="hero-text">
+                            <h1>Welcome to CSE Motors</h1>
+                            <p>Your trusted car dealership for quality vehicles and reliable service.</p>
+                            <a href="#" class="btn">Browse Inventory</a>
+                        </div>
+                    </section>
+
+                    <!-- Features Section -->
+                    <section class="features">
+                        <h2>Why Choose CSE Motors?</h2>
+                        <ul>
+                            <li>Wide range of vehicles</li>
+                            <li>Affordable financing options</li>
+                            <li>Reliable customer support</li>
+                        </ul>
+                    </section>
+                </main>
+
+                <%- include('./partials/footer') %>
+    </body>
+
+</html>
