@@ -34,11 +34,10 @@ app.get("/", function (req, res) {
  * Values from .env (environment) file
  *************************/
 const port = process.env.PORT || 5500
-const host = process.env.HOST || "localhost"
 
 /* ***********************
  * Log statement to confirm server operation
  *************************/
-app.listen(port, host, () => {
-  console.log(`app listening on http://${host}:${port}`)
-})
+app.listen(port, () => {
+  console.log(`App listening on port ${port}`);
+});
