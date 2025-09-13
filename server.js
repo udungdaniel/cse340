@@ -33,7 +33,7 @@ app.get("/", function (req, res) {
  * Local Server Information
  * Values from .env (environment) file
  *************************/
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 5500
 const host = process.env.HOST || "localhost"
 
 /* ***********************
