@@ -17,7 +17,10 @@ body {
   background: #fff;
 }
 
-header, nav, main, footer {
+header,
+nav,
+main,
+footer {
   padding: 1rem;
 }
 
@@ -26,25 +29,23 @@ header img {
 }
 
 /* Navigation */
+nav {
+  background: darkblue;
+  color: white;
+}
+
 nav ul {
   list-style: none;
   padding: 0;
+  margin: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-nav a {
-  text-decoration: none;
-  color: #004080;
+nav li {
   padding: 0.5rem 1rem;
-  display: block;
-}
-
-nav a:hover {
-  background: #004080;
-  color: #fff;
-  border-radius: 5px;
+  font-weight: 500;
 }
 
 /* Hero Section */
@@ -98,6 +99,7 @@ nav a:hover {
 .features ul {
   list-style: none;
   padding: 0;
+  margin: 0;
   text-align: center;
 }
 
@@ -109,7 +111,8 @@ nav a:hover {
 /* Footer */
 footer {
   text-align: center;
-  background: #f1f1f1;
+  background: darkblue;
+  color: white;
   padding: 1rem;
   margin-top: 2rem;
   font-size: 0.9rem;
