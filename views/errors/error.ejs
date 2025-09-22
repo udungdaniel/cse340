@@ -1,0 +1,13 @@
+<main>
+    <h1>
+        <%= title || "An Error Occurred" %>
+    </h1>
+
+    <section class="error">
+        <p><%- message || "Something went wrong on the server." %></p>
+
+        <p>Looks like the server took a coffee break. Try again in a bit!</p>
+
+        <a href="/" class="btn">Return Home</a>
+    </section>
+</main>
