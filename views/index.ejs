@@ -1,19 +1,41 @@
-<!-- Hero Section -->
-<section class="hero">
-    <img src="/images/vehicles/camaro.jpg" alt="Car image">
-    <div class="hero-text">
-        <h1>Welcome to CSE Motors</h1>
-        <p>Your trusted car dealership for quality vehicles and reliable service.</p>
-        <a href="#" class="btn">Browse Inventory</a>
-    </div>
-</section>
+<!DOCTYPE html>
+<html lang="en">
 
-<!-- Features Section -->
-<section class="features">
-    <h2>Why Choose CSE Motors?</h2>
-    <ul>
-        <li>Wide range of vehicles</li>
-        <li>Affordable financing options</li>
-        <li>Reliable customer support</li>
-    </ul>
-</section>
+<head>
+    <meta charset="UTF-8" >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" >
+    <title>CSE Motors</title>
+    <link rel="stylesheet" href="/css/styles.css" >
+</head>
+
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <img src="/images/vehicles/camaro.jpg" alt="Car image">
+        <div class="hero-text">
+            <h1>Welcome to CSE Motors</h1>
+            <p>Your trusted car dealership for quality vehicles and reliable service.</p>
+            <!-- Updated link to inventory route -->
+            <a href="/inv" class="btn">Browse Inventory</a>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <h2>Why Choose CSE Motors?</h2>
+        <ul>
+            <li>Wide range of vehicles</li>
+            <li>Affordable financing options</li>
+            <li>Reliable customer support</li>
+        </ul>
+    </section>
+
+   
+
+    <script>
+        // Auto-update footer year
+        document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+</body>
+
+</html>

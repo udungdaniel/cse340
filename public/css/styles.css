@@ -28,6 +28,7 @@ header img {
   max-width: 150px;
 }
 
+
 /* Navigation */
 nav {
   background: darkblue;
@@ -46,6 +47,17 @@ nav ul {
 nav li {
   padding: 0.5rem 1rem;
   font-weight: 500;
+}
+
+nav a {
+  color: white;
+  /* make nav links white */
+  text-decoration: none;
+  font-weight: 500;
+}
+
+nav a:hover {
+  text-decoration: underline;
 }
 
 /* Hero Section */
@@ -118,6 +130,52 @@ footer {
   font-size: 0.9rem;
 }
 
+footer a {
+  color: white;
+  /* make footer links white */
+  text-decoration: none;
+  font-weight: 500;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+/* Links (Global) */
+a {
+  color: white;
+  /* default for nav & footer */
+  text-decoration: none;
+  font-weight: 500;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Buttons */
+.btn,
+footer a,
+nav a {
+  display: inline-block;
+  padding: 0.7rem 1.5rem;
+  background: #004080;
+  /* unified blue background */
+  color: white;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.btn:hover,
+footer a:hover,
+nav a:hover {
+  background: #002850;
+  /* unified hover color */
+  text-decoration: none;
+  /* remove underline on hover */
+}
+
 /* ==========================
    Larger Screens
    ========================== */
@@ -151,5 +209,38 @@ footer {
   main {
     max-width: 1200px;
     margin: auto;
+  }
+}
+
+.vehicle-detail {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin: 1.5rem 0;
+}
+
+.vehicle-image {
+  flex: 1 1 420px;
+}
+
+.vehicle-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.vehicle-info {
+  flex: 1 1 320px;
+}
+
+.vehicle-price {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #0073e6;
+}
+
+@media (max-width: 700px) {
+  .vehicle-detail {
+    flex-direction: column;
   }
 }

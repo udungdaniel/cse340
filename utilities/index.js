@@ -1,36 +1,77 @@
-const invModel = require("../models/inventory-model")
+// utilities/index.js
 
-const Util = {}
-
-/* ************************
- * Constructs the nav HTML unordered list
- ************************** */
-Util.getNav = async function () {
-  let data = await invModel.getClassifications()
-  let list = "<ul>"
-  list += '<li><a href="/" title="Home page">Home</a></li>'
-  data.rows.forEach((row) => {
-    list += "<li>"
-    list +=
-      '<a href="/inv/type/' +
-      row.classification_id +
-      '" title="See our inventory of ' +
-      row.classification_name +
-      ' vehicles">' +
-      row.classification_name +
-      "</a>"
-    list += "</li>"
-  })
-  list += "</ul>"
-  return list
+/* ***************
+ * Error Handler Wrapper
+ **************** */
+function handleErrors(fn) {
+  return function (req, res, next) {
+    Promise.resolve(fn(req, res, next)).catch(next)
+  }
 }
 
-/* ****************************************
- * Middleware For Handling Errors
- * Wrap other function in this for 
- * General Error Handling
- **************************************** */
-Util.handleErrors = fn => (req, res, next) =>
-  Promise.resolve(fn(req, res, next)).catch(next)
+/* ***************
+ * Build navigation (stub for now)
+ **************** */
+async function getNav() {
+  // Example nav data – replace with DB-driven menu if needed
+  return `
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/inv">Inventory</a></li>
+      <li><a href="/about">About</a></li>
+    </ul>
+  `
+}
 
-module.exports = Util
+/* ***************
+ * Build vehicle grid (classification or all inventory)
+ **************** */
+async function buildClassificationGrid(data) {
+  let grid = '<ul class="vehicle-grid">'
+  data.forEach(vehicle => {
+    grid += `
+      <li>
+        <a href="/inv/detail/${vehicle.inv_id}">
+          <img src="${vehicle.inv_thumbnail}" alt="Image of ${vehicle.inv_make} ${vehicle.inv_model}">
+        </a>
+        <div class="namePrice">
+          <h2>
+            <a href="/inv/detail/${vehicle.inv_id}">
+              ${vehicle.inv_make} ${vehicle.inv_model}
+            </a>
+          </h2>
+          <span>$${new Intl.NumberFormat().format(vehicle.inv_price)}</span>
+        </div>
+      </li>
+    `
+  })
+  grid += "</ul>"
+  return grid
+}
+
+/* ***************
+ * Build vehicle detail HTML
+ **************** */
+async function buildVehicleDetail(vehicle) {
+  return `
+    <section class="vehicle-detail">
+      <h1>${vehicle.inv_make} ${vehicle.inv_model}</h1>
+      <div class="vehicle-grid">
+        <img src="${vehicle.inv_image}" alt="Image of ${vehicle.inv_make} ${vehicle.inv_model}">
+        <div class="vehicle-info">
+          <p><strong>Price:</strong> $${new Intl.NumberFormat().format(vehicle.inv_price)}</p>
+          <p><strong>Mileage:</strong> ${new Intl.NumberFormat().format(vehicle.inv_miles)} miles</p>
+          <p><strong>Description:</strong> ${vehicle.inv_description}</p>
+          <p><strong>Color:</strong> ${vehicle.inv_color}</p>
+        </div>
+      </div>
+    </section>
+  `
+}
+
+module.exports = {
+  handleErrors,
+  getNav,
+  buildClassificationGrid,
+  buildVehicleDetail
+}
