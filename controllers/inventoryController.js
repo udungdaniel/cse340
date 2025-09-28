@@ -26,11 +26,11 @@ invController.buildByInvId = async function (req, res, next) {
     const invId = req.params.invId
     const data = await invModel.getVehicleById(invId)
     const nav = await utilities.getNav()
-    const detail = await utilities.buildVehicleDetail(data)
+    const vehicleDetail = await utilities.buildVehicleDetail(data)
     res.render("./inventory/detail", {
         title: `${data.inv_make} ${data.inv_model}`,
         nav,
-        detail,
+        vehicleDetail,   // 🔹 updated key to match EJS
     })
 }
 
