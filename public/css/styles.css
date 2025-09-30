@@ -28,7 +28,6 @@ header img {
   max-width: 150px;
 }
 
-
 /* Navigation */
 nav {
   background: darkblue;
@@ -51,7 +50,6 @@ nav li {
 
 nav a {
   color: white;
-  /* make nav links white */
   text-decoration: none;
   font-weight: 500;
 }
@@ -132,7 +130,6 @@ footer {
 
 footer a {
   color: white;
-  /* make footer links white */
   text-decoration: none;
   font-weight: 500;
 }
@@ -144,7 +141,6 @@ footer a:hover {
 /* Links (Global) */
 a {
   color: white;
-  /* default for nav & footer */
   text-decoration: none;
   font-weight: 500;
 }
@@ -160,7 +156,6 @@ nav a {
   display: inline-block;
   padding: 0.7rem 1.5rem;
   background: #004080;
-  /* unified blue background */
   color: white;
   border-radius: 5px;
   text-decoration: none;
@@ -171,9 +166,7 @@ nav a {
 footer a:hover,
 nav a:hover {
   background: #002850;
-  /* unified hover color */
   text-decoration: none;
-  /* remove underline on hover */
 }
 
 /* ==========================
@@ -212,15 +205,14 @@ nav a:hover {
   }
 }
 
+/* ==========================
+   Vehicle Detail Styles
+   ========================== */
 .vehicle-detail {
   display: flex;
-  gap: 2rem;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 1.5rem;
   margin: 1.5rem 0;
-}
-
-.vehicle-image {
-  flex: 1 1 420px;
 }
 
 .vehicle-image img {
@@ -230,17 +222,26 @@ nav a:hover {
 }
 
 .vehicle-info {
-  flex: 1 1 320px;
+  font-size: 1rem;
+  line-height: 1.6;
 }
 
 .vehicle-price {
   font-size: 1.5rem;
   font-weight: bold;
   color: #0073e6;
+  margin: 1rem 0;
 }
 
-@media (max-width: 700px) {
+/* Responsive Layout for Larger Screens */
+@media (min-width: 768px) {
   .vehicle-detail {
-    flex-direction: column;
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .vehicle-image,
+  .vehicle-info {
+    flex: 1 1 50%;
   }
 }

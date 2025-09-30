@@ -1,5 +1,3 @@
-// utilities/index.js
-
 /* ***************
  * Error Handler Wrapper
  **************** */
@@ -13,7 +11,6 @@ function handleErrors(fn) {
  * Build navigation (stub for now)
  **************** */
 async function getNav() {
-  // Example nav data – replace with DB-driven menu if needed
   return `
     <ul>
       <li><a href="/">Home</a></li>
@@ -55,15 +52,15 @@ async function buildClassificationGrid(data) {
 async function buildVehicleDetail(vehicle) {
   return `
     <section class="vehicle-detail">
-      <h1>${vehicle.inv_make} ${vehicle.inv_model}</h1>
-      <div class="vehicle-grid">
+      <div class="vehicle-image">
         <img src="${vehicle.inv_image}" alt="Image of ${vehicle.inv_make} ${vehicle.inv_model}">
-        <div class="vehicle-info">
-          <p><strong>Price:</strong> $${new Intl.NumberFormat().format(vehicle.inv_price)}</p>
-          <p><strong>Mileage:</strong> ${new Intl.NumberFormat().format(vehicle.inv_miles)} miles</p>
-          <p><strong>Description:</strong> ${vehicle.inv_description}</p>
-          <p><strong>Color:</strong> ${vehicle.inv_color}</p>
-        </div>
+      </div>
+      <div class="vehicle-info">
+        <h2>${vehicle.inv_make} ${vehicle.inv_model}</h2>
+        <p><strong>Price:</strong> $${new Intl.NumberFormat().format(vehicle.inv_price)}</p>
+        <p><strong>Mileage:</strong> ${new Intl.NumberFormat().format(vehicle.inv_miles)} miles</p>
+        <p><strong>Description:</strong> ${vehicle.inv_description}</p>
+        <p><strong>Color:</strong> ${vehicle.inv_color}</p>
       </div>
     </section>
   `
