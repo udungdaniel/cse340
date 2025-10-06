@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Inventory Management</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <main class="inventory-management">
+        <h1>Inventory Management</h1>
+
+        <!-- Flash message display -->
+        <% if (message) { %>
+            <div class="flash-message">
+                <%= message %>
+            </div>
+            <% } %>
+
+                <ul class="management-links">
+                    <li><a href="/inv/add-classification" class="btn-link">Add New Classification</a></li>
+                    <li><a href="/inv/add-vehicle" class="btn-link">Add New Vehicle</a></li>
+                </ul>
+    </main>
+</body>
+
+</html>

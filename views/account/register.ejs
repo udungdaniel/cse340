@@ -1,0 +1,65 @@
+<%- include('../partials/header') %>
+
+    <main id="register-view">
+        <h1>
+            <%= title %>
+        </h1>
+
+        <!-- Flash Messages -->
+        <% if (messages && messages().length> 0) { %>
+            <div class="flash-messages">
+                <%= messages() %>
+            </div>
+            <% } %>
+
+                <!-- Validation Errors -->
+                <% if (errors) { %>
+                    <ul class="notice">
+                        <% errors.array().forEach(error=> { %>
+                            <li>
+                                <%= error.msg %>
+                            </li>
+                            <% }) %>
+                    </ul>
+                    <% } %>
+
+                        <!-- Registration Form -->
+                        <form action="/account/register" method="post" class="register-form">
+                            <div class="form-group">
+                                <label for="account_firstname">First Name</label>
+                                <input type="text" id="account_firstname" name="account_firstname"
+                                    placeholder="Enter your first name"
+                                    value="<%= account_firstname ? account_firstname : '' %>" required />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="account_lastname">Last Name</label>
+                                <input type="text" id="account_lastname" name="account_lastname"
+                                    placeholder="Enter your last name"
+                                    value="<%= account_lastname ? account_lastname : '' %>" required />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="account_email">Email Address</label>
+                                <input type="email" id="account_email" name="account_email"
+                                    placeholder="Enter your email" value="<%= account_email ? account_email : '' %>"
+                                    required />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="account_password">Password</label>
+                                <input type="password" id="account_password" name="account_password"
+                                    placeholder="Enter a strong password" required />
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn">Register</button>
+                            </div>
+                        </form>
+
+                        <p class="login-link">
+                            Already have an account? <a href="/account/login">Login here</a>
+                        </p>
+    </main>
+
+    <%- include('../partials/footer') %>

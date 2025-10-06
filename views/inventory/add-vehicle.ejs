@@ -1,0 +1,81 @@
+<main class="inventory-container">
+  <h1>Add New Vehicle</h1>
+
+  <% if (message) { %>
+    <div class="flash-message">
+      <%= message %>
+    </div>
+  <% } %>
+
+  <% if (errors && errors.length) { %>
+    <div class="flash-messages">
+      <ul>
+        <% errors.forEach(err => { %>
+          <li><%= err.msg %></li>
+        <% }) %>
+      </ul>
+    </div>
+  <% } %>
+
+  <form id="add-vehicle-form" action="/inv/add-vehicle" method="post" novalidate>
+    <label for="classification_id">Classification</label>
+    <select id="classification_id" name="classification_id" required>
+      <% if (classificationList && classificationList.length) { %>
+        <% classificationList.forEach(classification => { %>
+          <option value="<%= classification.classification_id %>"
+            <%= classification.classification_id == classification_id ? 'selected' : '' %>>
+            <%= classification.classification_name %>
+          </option>
+        <% }) %>
+      <% } else { %>
+        <option value="">No classifications available</option>
+      <% } %>
+    </select>
+
+    <label for="inv_make">Make</label>
+    <input type="text" name="inv_make" id="inv_make" required value="<%= inv_make || '' %>" />
+
+    <label for="inv_model">Model</label>
+    <input type="text" name="inv_model" id="inv_model" required value="<%= inv_model || '' %>" />
+
+    <label for="inv_year">Year</label>
+    <input type="number" name="inv_year" id="inv_year" min="1900" max="2099" required value="<%= inv_year || '' %>" />
+
+    <label for="inv_price">Price</label>
+    <input type="number" name="inv_price" id="inv_price" step="0.01" required value="<%= inv_price || '' %>" />
+
+    <label for="inv_description">Description</label>
+    <textarea name="inv_description" id="inv_description" required><%= inv_description || '' %></textarea>
+
+    <label for="inv_image">Image Path</label>
+    <input type="text" name="inv_image" id="inv_image" required value="<%= inv_image || '/images/no-image.png' %>" />
+
+    <label for="inv_thumbnail">Thumbnail Path</label>
+    <input type="text" name="inv_thumbnail" id="inv_thumbnail" required value="<%= inv_thumbnail || '/images/no-image.png' %>" />
+
+    <div class="form-actions">
+      <button class="btn" type="submit">Add Vehicle</button>
+    </div>
+  </form>
+
+  <script>
+    document.getElementById('add-vehicle-form').addEventListener('submit', function (e) {
+      const year = parseInt(document.getElementById('inv_year').value, 10);
+      const price = parseFloat(document.getElementById('inv_price').value);
+      const make = document.getElementById('inv_make').value.trim();
+      const model = document.getElementById('inv_model').value.trim();
+      const desc = document.getElementById('inv_description').value.trim();
+
+      let errors = [];
+      if (!make || !model) errors.push('Make and model are required.');
+      if (!Number.isInteger(year) || year < 1900 || year > 2099) errors.push('Year is invalid.');
+      if (isNaN(price) || price <= 0) errors.push('Price must be positive.');
+      if (!desc) errors.push('Description is required.');
+
+      if (errors.length) {
+        e.preventDefault();
+        alert(errors.join('\n'));
+      }
+    });
+  </script>
+</main>
