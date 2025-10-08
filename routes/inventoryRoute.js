@@ -18,4 +18,10 @@ router.get("/add-vehicle", utilities.handleErrors(inventoryController.addVehicle
 // Process Add Vehicle - /inv/add-vehicle
 router.post("/add-vehicle", utilities.handleErrors(inventoryController.addVehicle))
 
+// View vehicles by classification - /inv/type/:classificationId
+router.get("/type/:classificationId", utilities.handleErrors(inventoryController.buildByClassificationId))
+
+// View vehicle details - /inv/detail/:vehicleId
+router.get("/detail/:vehicleId", utilities.handleErrors(inventoryController.buildByVehicleId))
+
 module.exports = router

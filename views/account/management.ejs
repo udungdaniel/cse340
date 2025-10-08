@@ -1,0 +1,24 @@
+<!-- views/account/management.ejs -->
+    <main>
+        <h1>
+            <%= title %>
+        </h1>
+
+        <% if (message && message.length> 0) { %>
+            <div class="notice">
+                <%= message %>
+            </div>
+            <% } %>
+
+                <% if (errors && errors.length> 0) { %>
+                    <ul class="errors">
+                        <% errors.forEach(error=> { %>
+                            <li>
+                                <%= error.msg %>
+                            </li>
+                            <% }) %>
+                    </ul>
+                    <% } %>
+
+                        <p>You're logged in.</p>
+    </main>

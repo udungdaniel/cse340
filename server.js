@@ -4,6 +4,7 @@ const expressLayouts = require("express-ejs-layouts")
 const pool = require("./database/")
 require("dotenv").config()
 const bodyParser = require("body-parser")
+const cookieParser = require("cookie-parser") // Added cookie-parser
 
 // Controllers & routes
 const baseController = require("./controllers/baseController")
@@ -35,6 +36,12 @@ app.use((req, res, next) => {
 // Body parser
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
+
+// Cookie parser middleware
+app.use(cookieParser())
+
+// JWT check middleware (applied globally)
+app.use(utilities.checkJWTToken)
 
 // View engine
 app.set("view engine", "ejs")
