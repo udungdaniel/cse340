@@ -12,14 +12,13 @@ function handleErrors(fn) {
 }
 
 /* ***************
- * Build dynamic navigation
+ * Build Dynamic Navigation
  **************** */
 async function getNav() {
   try {
     const data = await invModel.getClassifications()
     let nav = "<ul>"
     nav += '<li><a href="/" title="Home page">Home</a></li>'
-    // dynamically add classifications
     data.forEach((row) => {
       nav += `
         <li>
@@ -45,32 +44,43 @@ async function getNav() {
 }
 
 /* ***************
- * Build vehicle grid
+ * Build Inventory Grid (for Management View)
  **************** */
 async function buildClassificationGrid(data) {
-  let grid = '<ul class="vehicle-grid">'
-  data.forEach(vehicle => {
+  if (!data || data.length === 0) {
+    return '<p class="notice">Sorry, no matching vehicles could be found.</p>'
+  }
+
+  let grid = `
+    <table class="inv-display">
+      <thead>
+        <tr>
+          <th>Vehicle Name</th>
+          <th>View</th>
+          <th>Modify</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+  `
+
+  data.forEach((vehicle) => {
     grid += `
-      <li>
-        <a href="/inv/detail/${vehicle.inv_id}">
-          <img src="${vehicle.inv_thumbnail}" alt="Image of ${vehicle.inv_make} ${vehicle.inv_model}">
-        </a>
-        <div class="namePrice">
-          <h2>
-            <a href="/inv/detail/${vehicle.inv_id}">
-              ${vehicle.inv_make} ${vehicle.inv_model}
-            </a>
-          </h2>
-          <span>$${new Intl.NumberFormat().format(vehicle.inv_price)}</span>
-        </div>
-      </li>`
+      <tr>
+        <td>${vehicle.inv_make} ${vehicle.inv_model}</td>
+        <td><a href="/inv/detail/${vehicle.inv_id}" title="View details for ${vehicle.inv_make} ${vehicle.inv_model}">View</a></td>
+        <td><a href="/inv/edit/${vehicle.inv_id}" title="Modify ${vehicle.inv_make} ${vehicle.inv_model}">Modify</a></td>
+        <td><a href="/inv/delete/${vehicle.inv_id}" title="Delete ${vehicle.inv_make} ${vehicle.inv_model}">Delete</a></td>
+      </tr>
+    `
   })
-  grid += "</ul>"
+
+  grid += "</tbody></table>"
   return grid
 }
 
 /* ***************
- * Build vehicle detail
+ * Build Vehicle Detail View
  **************** */
 async function buildVehicleDetail(vehicle) {
   return `
@@ -89,7 +99,7 @@ async function buildVehicleDetail(vehicle) {
 }
 
 /* ***************
- * Build Classification Dropdown for Add Vehicle Form
+ * Build Classification Dropdown List
  **************** */
 async function buildClassificationList(selectedId = null) {
   try {
@@ -109,31 +119,27 @@ async function buildClassificationList(selectedId = null) {
 }
 
 /* ****************************************
- * Middleware to check token validity
+ * Middleware: Check JWT Validity
  **************************************** */
 function checkJWTToken(req, res, next) {
   if (req.cookies && req.cookies.jwt) {
-    jwt.verify(
-      req.cookies.jwt,
-      process.env.ACCESS_TOKEN_SECRET,
-      function (err, accountData) {
-        if (err) {
-          req.flash("notice", "Please log in")
-          res.clearCookie("jwt")
-          return res.redirect("/account/login")
-        }
-        res.locals.accountData = accountData
-        res.locals.loggedin = 1
-        next()
+    jwt.verify(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET, (err, accountData) => {
+      if (err) {
+        req.flash("notice", "Please log in")
+        res.clearCookie("jwt")
+        return res.redirect("/account/login")
       }
-    )
+      res.locals.accountData = accountData
+      res.locals.loggedin = 1
+      next()
+    })
   } else {
     next()
   }
 }
 
 /* ****************************************
- * Middleware to check login (authorization)
+ * Middleware: Check Login Authorization
  **************************************** */
 function checkLogin(req, res, next) {
   if (res.locals.loggedin) {
@@ -144,6 +150,9 @@ function checkLogin(req, res, next) {
   }
 }
 
+/* ***************
+ * Module Exports
+ **************** */
 const Util = {
   handleErrors,
   getNav,

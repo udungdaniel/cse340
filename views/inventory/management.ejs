@@ -1,28 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
+<main>
+    <h1>Inventory Management</h1>
 
-<head>
-    <meta charset="UTF-8">
-    <title>Inventory Management</title>
-    <link rel="stylesheet" href="/css/styles.css">
-</head>
+    <!-- Flash message (optional) -->
+    <% if (message) { %>
+        <div class="flash-message">
+            <%= message %>
+        </div>
+        <% } %>
 
-<body>
-    <main class="inventory-management">
-        <h1>Inventory Management</h1>
-
-        <!-- Flash message display -->
-        <% if (message) { %>
-            <div class="flash-message">
-                <%= message %>
+            <!-- Links to add new items -->
+            <div class="management-links">
+                <a href="/inv/add-classification" class="button">Add New Classification</a>
+                <a href="/inv/add-vehicle" class="button">Add New Vehicle</a>
             </div>
-            <% } %>
 
-                <ul class="management-links">
-                    <li><a href="/inv/add-classification" class="btn-link">Add New Classification</a></li>
-                    <li><a href="/inv/add-vehicle" class="btn-link">Add New Vehicle</a></li>
-                </ul>
-    </main>
-</body>
+            <!-- Section for managing inventory -->
+            <h2>Manage Inventory</h2>
+            <p>Select a classification from the list below to see the items belonging to that classification.</p>
 
-</html>
+            <!-- Classification select list -->
+            <div class="classification-select">
+                <%- classificationSelect %>
+            </div>
+
+            <!-- Table placeholder for AJAX results -->
+            <table id="inventoryDisplay"></table>
+
+            <!-- Message if JS is disabled -->
+            <noscript>JavaScript must be enabled to use this page.</noscript>
+</main>
+
+<!-- Hook up your management JS file -->
+<script src="/js/inventory.js"></script>

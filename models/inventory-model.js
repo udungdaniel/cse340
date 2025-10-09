@@ -1,127 +1,170 @@
-const pool = require('../database/') // PostgreSQL connection pool
+const pool = require("../database/")
 
 /* ***************************
- *  Get all classifications
- * ************************** */
-async function getClassifications() {
-    try {
-        const sql = "SELECT * FROM public.classification ORDER BY classification_name"
-        const data = await pool.query(sql)
-        return data.rows
-    } catch (error) {
-        console.error("getClassifications error:", error)
-        throw error
-    }
-}
-
-/* ***************************
- *  Insert a new classification
- * ************************** */
-async function insertClassification(classification_name) {
-    try {
-        const sql = `INSERT INTO public.classification (classification_name)
-                 VALUES ($1)
-                 RETURNING classification_id;`
-        const values = [classification_name]
-        const result = await pool.query(sql, values)
-        // Return inserted id or null
-        return result.rowCount > 0 ? result.rows[0].classification_id : null
-    } catch (error) {
-        console.error("insertClassification error:", error)
-        throw error
-    }
-}
-
-/* ***************************
- *  Insert a new vehicle into inventory
- * ************************** */
-async function insertVehicle(vehicleData) {
-    try {
-        const {
-            classification_id,
-            inv_make,
-            inv_model,
-            inv_year,
-            inv_description,
-            inv_price,
-            inv_image,
-            inv_thumbnail
-        } = vehicleData
-
-        const sql = `INSERT INTO public.inventory
-      (classification_id, inv_make, inv_model, inv_year, inv_description, inv_price, inv_image, inv_thumbnail)
-      VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
-      RETURNING inv_id;`
-
-        const values = [
-            parseInt(classification_id, 10),
-            inv_make,
-            inv_model,
-            parseInt(inv_year, 10),
-            inv_description,
-            parseFloat(inv_price),
-            inv_image,
-            inv_thumbnail
-        ]
-
-        const result = await pool.query(sql, values)
-        return result.rowCount > 0 ? result.rows[0].inv_id : null
-    } catch (error) {
-        console.error("insertVehicle error:", error)
-        throw error
-    }
-}
-
-/* ***************************
- *  Get all vehicles (for management or listing)
- * ************************** */
-async function getAllInventory() {
-    try {
-        const sql = `SELECT inv_id, inv_make, inv_model, inv_year, inv_price, inv_thumbnail, c.classification_name
-                 FROM public.inventory i
-                 JOIN public.classification c ON i.classification_id = c.classification_id
-                 ORDER BY inv_make, inv_model`
-        const data = await pool.query(sql)
-        return data.rows
-    } catch (error) {
-        console.error("getAllInventory error:", error)
-        throw error
-    }
-}
-
-/* ***************************
- *  Get vehicles by classification ID
+ *  Get all inventory by classification_id
  * ************************** */
 async function getInventoryByClassificationId(classification_id) {
     try {
-        const sql = `SELECT * FROM public.inventory WHERE classification_id = $1 ORDER BY inv_make, inv_model`
-        const data = await pool.query(sql, [classification_id])
+        const data = await pool.query(
+            "SELECT * FROM public.inventory WHERE classification_id = $1",
+            [classification_id]
+        )
         return data.rows
     } catch (error) {
         console.error("getInventoryByClassificationId error:", error)
-        throw error
     }
 }
 
 /* ***************************
- *  Get single vehicle by ID
+ *  Get vehicle by inventory id
  * ************************** */
 async function getVehicleById(inv_id) {
     try {
-        const sql = `SELECT * FROM public.inventory WHERE inv_id = $1`
-        const data = await pool.query(sql, [inv_id])
+        const data = await pool.query(
+            "SELECT * FROM public.inventory WHERE inv_id = $1",
+            [inv_id]
+        )
         return data.rows[0]
     } catch (error) {
         console.error("getVehicleById error:", error)
-        throw error
     }
 }
 
+/* ***************************
+ *  Get all inventory
+ * ************************** */
+async function getAllInventory() {
+    try {
+        const data = await pool.query("SELECT * FROM public.inventory ORDER BY inv_make")
+        return data.rows
+    } catch (error) {
+        console.error("getAllInventory error:", error)
+    }
+}
+
+/* ***************************
+ *  Add new classification
+ * ************************** */
+async function insertClassification(classification_name) {
+    try {
+        const sql = "INSERT INTO public.classification (classification_name) VALUES ($1) RETURNING *"
+        const data = await pool.query(sql, [classification_name])
+        return data.rows[0]
+    } catch (error) {
+        console.error("insertClassification error:", error)
+    }
+}
+
+/* ***************************
+ *  Add new vehicle
+ * ************************** */
+async function insertVehicle(vehicleData) {
+    try {
+        const sql = `
+      INSERT INTO public.inventory 
+      (classification_id, inv_make, inv_model, inv_year, inv_price, inv_description, inv_image, inv_thumbnail)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+      RETURNING *`
+        const data = await pool.query(sql, [
+            vehicleData.classification_id,
+            vehicleData.inv_make,
+            vehicleData.inv_model,
+            vehicleData.inv_year,
+            vehicleData.inv_price,
+            vehicleData.inv_description,
+            vehicleData.inv_image,
+            vehicleData.inv_thumbnail,
+        ])
+        return data.rows[0]
+    } catch (error) {
+        console.error("insertVehicle error:", error)
+    }
+}
+
+/* ***************************
+ *  Get classifications
+ * ************************** */
+async function getClassifications() {
+    try {
+        const data = await pool.query("SELECT * FROM public.classification ORDER BY classification_name")
+        return data.rows
+    } catch (error) {
+        console.error("getClassifications error:", error)
+    }
+}
+
+/* ***************************
+ *  Get inventory item by ID (for edit)
+ * ************************** */
+async function getInventoryById(inv_id) {
+    try {
+        const data = await pool.query("SELECT * FROM public.inventory WHERE inv_id = $1", [inv_id])
+        return data.rows[0]
+    } catch (error) {
+        console.error("getInventoryById error:", error)
+    }
+}
+
+/* ***************************
+ *  Update Inventory Data
+ * ************************** */
+async function updateInventory(
+    inv_id,
+    inv_make,
+    inv_model,
+    inv_description,
+    inv_image,
+    inv_thumbnail,
+    inv_price,
+    inv_year,
+    inv_miles,
+    inv_color,
+    classification_id
+) {
+    try {
+        const sql = `
+      UPDATE public.inventory 
+      SET inv_make = $1,
+          inv_model = $2,
+          inv_description = $3,
+          inv_image = $4,
+          inv_thumbnail = $5,
+          inv_price = $6,
+          inv_year = $7,
+          inv_miles = $8,
+          inv_color = $9,
+          classification_id = $10
+      WHERE inv_id = $11
+      RETURNING *`
+        const data = await pool.query(sql, [
+            inv_make,
+            inv_model,
+            inv_description,
+            inv_image,
+            inv_thumbnail,
+            inv_price,
+            inv_year,
+            inv_miles,
+            inv_color,
+            classification_id,
+            inv_id,
+        ])
+        return data.rows[0]
+    } catch (error) {
+        console.error("model error: " + error)
+    }
+}
+
+/* ***************************
+ *  Module Exports
+ * ************************** */
 module.exports = {
-    getClassifications,
+    getInventoryByClassificationId,
+    getVehicleById,
+    getAllInventory,
     insertClassification,
     insertVehicle,
-    getAllInventory,
-    getInventoryByClassificationId,
-    getVehicleById
+    getClassifications,
+    getInventoryById,
+    updateInventory,
 }
