@@ -850,3 +850,51 @@ nav a:hover {
   margin-bottom: 1rem;
   border-radius: 8px;
 }
+
+main {
+  max-width: 600px;
+  margin: auto;
+  padding: 1rem;
+}
+
+h2 {
+  margin-top: 2rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 0.5rem;
+  box-sizing: border-box;
+}
+
+input[type="submit"] {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+.errors {
+  color: red;
+  margin-bottom: 1rem;
+}
+
+.notice {
+  color: green;
+  margin-bottom: 1rem;
+}
+
+small {
+  display: block;
+  margin-top: 0.25rem;
+  color: #555;
+}

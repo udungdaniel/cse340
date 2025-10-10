@@ -1,51 +1,72 @@
-const express = require("express")
-const router = express.Router()
-const inventoryController = require("../controllers/inventoryController")
-const utilities = require("../utilities")
+const express = require("express");
+const router = express.Router();
+const inventoryController = require("../controllers/inventoryController");
+const utilities = require("../utilities");
+const checkEmployee = require("../middleware/checkEmployee"); // Middleware to restrict access
 
-// Management View - /inv/
-router.get("/", utilities.handleErrors(inventoryController.buildManagementView))
+// Management View - /inv/ (protected)
+router.get("/", checkEmployee, utilities.handleErrors(inventoryController.buildManagementView));
 
-// Add Classification View - /inv/add-classification
+// Add Classification View - /inv/add-classification (protected)
 router.get(
-    "/add-classification",
-    utilities.handleErrors(inventoryController.addClassificationView)
-)
+  "/add-classification",
+  checkEmployee,
+  utilities.handleErrors(inventoryController.addClassificationView)
+);
 
-// Add Vehicle View - /inv/add-vehicle
+// Add Vehicle View - /inv/add-vehicle (protected)
 router.get(
-    "/add-vehicle",
-    utilities.handleErrors(inventoryController.addInventoryView)
-)
+  "/add-vehicle",
+  checkEmployee,
+  utilities.handleErrors(inventoryController.addInventoryView)
+);
 
-// Process Adding a New Classification
+// Process Adding a New Classification (protected)
 router.post(
-    "/add-classification",
-    utilities.handleErrors(inventoryController.addClassification)
-)
+  "/add-classification",
+  checkEmployee,
+  utilities.handleErrors(inventoryController.addClassification)
+);
 
-// Process Adding a New Vehicle
+// Process Adding a New Vehicle (protected)
 router.post(
-    "/add-vehicle",
-    utilities.handleErrors(inventoryController.addInventory)
-)
+  "/add-vehicle",
+  checkEmployee,
+  utilities.handleErrors(inventoryController.addInventory)
+);
 
-// Get Inventory JSON by Classification ID
+// Get Inventory JSON by Classification ID (open to visitors)
 router.get(
-    "/getInventory/:classification_id",
-    utilities.handleErrors(inventoryController.getInventoryJSON)
-)
+  "/getInventory/:classification_id",
+  utilities.handleErrors(inventoryController.getInventoryJSON)
+);
 
-// Edit Vehicle View
+// Edit Vehicle View (protected)
 router.get(
-    "/edit/:inv_id",
-    utilities.handleErrors(inventoryController.editInventoryView)
-)
+  "/edit/:inv_id",
+  checkEmployee,
+  utilities.handleErrors(inventoryController.editInventoryView)
+);
 
-// Process Updating Vehicle Information
+// Process Updating Vehicle Information (protected)
 router.post(
-    "/update",
-    utilities.handleErrors(inventoryController.updateInventory)
-)
+  "/update",
+  checkEmployee,
+  utilities.handleErrors(inventoryController.updateInventory)
+);
 
-module.exports = router
+// Delete Vehicle View (Confirmation Page, protected)
+router.get(
+  "/delete/:inv_id",
+  checkEmployee,
+  utilities.handleErrors(inventoryController.buildDeleteInventoryView)
+);
+
+// Process Deleting Vehicle (protected)
+router.post(
+  "/delete",
+  checkEmployee,
+  utilities.handleErrors(inventoryController.deleteInventoryItem)
+);
+
+module.exports = router;

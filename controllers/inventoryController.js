@@ -363,6 +363,62 @@ invController.updateInventory = async function (req, res, next) {
 }
 
 /* ***************************
- *  Export all functions
+ *  Build Delete Confirmation View
  * ************************** */
+invController.buildDeleteInventoryView = async (req, res, next) => {
+  try {
+    const inv_id = parseInt(req.params.inv_id)
+    const nav = await utilities.getNav()
+    const itemData = await invModel.getInventoryById(inv_id)
+
+    if (!itemData) {
+      req.flash("notice", "Sorry, the requested vehicle was not found.")
+      return res.redirect("/inv/")
+    }
+
+    const itemName = `${itemData.inv_make} ${itemData.inv_model}`
+
+    res.render("./inventory/delete-confirm", {
+      title: "Delete " + itemName,
+      nav,
+      errors: null,
+      inv_id: itemData.inv_id,
+      inv_make: itemData.inv_make,
+      inv_model: itemData.inv_model,
+      inv_year: itemData.inv_year,
+      inv_price: itemData.inv_price,
+    })
+  } catch (error) {
+    console.error("Error building delete view:", error)
+    next(error)
+  }
+}
+
+/* ***************************
+ *  Process Delete Inventory Item
+ * ************************** */
+invController.deleteInventoryItem = async (req, res, next) => {
+  try {
+    const inv_id = parseInt(req.body.inv_id, 10)
+
+    if (Number.isNaN(inv_id)) {
+      req.flash("notice", "Invalid inventory id.")
+      return res.redirect("/inv/")
+    }
+
+    const deleteResult = await invModel.deleteInventoryItem(inv_id)
+
+    if (deleteResult) {
+      req.flash("success", "Vehicle successfully deleted.")
+      return res.redirect("/inv/")
+    } else {
+      req.flash("notice", "Sorry, the delete failed. Please try again.")
+      return res.redirect(`/inv/delete/${inv_id}`)
+    }
+  } catch (error) {
+    console.error("Error processing delete:", error)
+    next(error)
+  }
+}
+
 module.exports = invController
