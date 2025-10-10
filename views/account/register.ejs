@@ -1,30 +1,45 @@
-<%- include("../partials/head") %>
-    <h1>
-        <%= title %>
-    </h1>
+<main class="auth-container" id="register-view">
+    <h1>Create an Account</h1>
 
-    <% if (message) { %>
-        <div class="notice">
-            <%= message %>
-        </div>
-        <% } %>
+    <% let msg=typeof message !=="undefined" ? message : "" ; %>
 
-            <form action="/account/register" method="POST" id="registerForm">
-                <label for="firstname">First Name:</label>
-                <input type="text" id="firstname" name="firstname" value="<%= account_firstname || '' %>" required
-                    minlength="2" placeholder="Enter your first name" />
+        <% if (errors && errors.length) { %>
+            <div class="flash-messages error">
+                <%= errors[0].msg %>
+            </div>
+            <% } %>
 
-                <label for="lastname">Last Name:</label>
-                <input type="text" id="lastname" name="lastname" value="<%= account_lastname || '' %>" required
-                    minlength="2" placeholder="Enter your last name" />
+                <% if (msg) { %>
+                    <div class="flash-messages success">
+                        <%= msg %>
+                    </div>
+                    <% } %>
 
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" value="<%= account_email || '' %>" required
-                    placeholder="Enter your email" />
+                        <form class="register-form" action="/account/register" method="post">
+                            <div class="form-group">
+                                <label for="firstname">First Name:</label>
+                                <input type="text" id="firstname" name="firstname" required>
+                            </div>
 
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required minlength="8"
-                    placeholder="Enter a strong password" />
+                            <div class="form-group">
+                                <label for="lastname">Last Name:</label>
+                                <input type="text" id="lastname" name="lastname" required>
+                            </div>
 
-                <button type="submit">Register</button>
-            </form>
+                            <div class="form-group">
+                                <label for="email">Email:</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password">Password:</label>
+                                <input type="password" id="password" name="password" required>
+                            </div>
+
+                            <button type="submit" class="btn-submit">Register</button>
+                        </form>
+
+                        <div class="alternate-action">
+                            <p>Already have an account? <a href="/account/login">Login here</a></p>
+                        </div>
+</main>

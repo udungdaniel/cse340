@@ -1,89 +1,116 @@
 const { body, validationResult } = require("express-validator")
-const utilities = require(".")
 
-const validate = {}
+/* ***************************
+ *  Registration Validation Rules
+ * ************************** */
+function registrationRules() {
+    return [
+        body("firstname")
+            .trim()
+            .notEmpty()
+            .withMessage("First name is required.")
+            .isLength({ max: 50 })
+            .withMessage("First name must be under 50 characters."),
+        body("lastname")
+            .trim()
+            .notEmpty()
+            .withMessage("Last name is required.")
+            .isLength({ max: 50 })
+            .withMessage("Last name must be under 50 characters."),
+        body("email")
+            .trim()
+            .notEmpty()
+            .withMessage("Email is required.")
+            .isEmail()
+            .withMessage("Email is not valid."),
+        body("password")
+            .notEmpty()
+            .withMessage("Password is required.")
+            .isLength({ min: 8 })
+            .withMessage("Password must be at least 8 characters long."),
+    ]
+}
 
-/* **************************************
- *  Registration Data Validation Rules
- * **************************************/
-validate.registrationRules = () => {
+/* ***************************
+ *  Login Validation Rules
+ * ************************** */
+function loginRules() {
+    return [
+        body("email")
+            .trim()
+            .notEmpty()
+            .withMessage("Email is required")
+            .isEmail()
+            .withMessage("Email is not valid"),
+        body("password").notEmpty().withMessage("Password is required"),
+    ]
+}
+
+/* ***************************
+ *  Profile Update Validation Rules
+ * ************************** */
+function profileUpdateRules() {
     return [
         body("account_firstname")
             .trim()
-            .isLength({ min: 1 })
-            .withMessage("Please provide a first name."),
-
-        body("account_lastname")
-            .trim()
-            .isLength({ min: 1 })
-            .withMessage("Please provide a last name."),
-
+            .notEmpty()
+            .withMessage("Name is required.")
+            .isLength({ max: 50 })
+            .withMessage("Name must be under 50 characters."),
         body("account_email")
-            .trim()
-            .isEmail()
-            .normalizeEmail()
-            .withMessage("A valid email is required."),
-
-        body("account_password")
-            .trim()
-            .isStrongPassword({
-                minLength: 8,
-                minLowercase: 1,
-                minUppercase: 1,
-                minNumbers: 1,
-                minSymbols: 1,
-            })
-            .withMessage("Password must be at least 8 characters long and include uppercase, lowercase, number, and symbol."),
-    ]
-}
-
-/* **************************************
- *  Check registration data and return errors
- * **************************************/
-validate.checkRegData = async (req, res, next) => {
-    const errors = validationResult(req)
-    if (!errors.isEmpty()) {
-        return res.render("account/register", {
-            title: "Register",
-            errors: errors.array(),
-            account_firstname: req.body.account_firstname,
-            account_lastname: req.body.account_lastname,
-            account_email: req.body.account_email,
-        })
-    }
-    next()
-}
-
-/* **************************************
- *  Login Data Validation Rules
- * **************************************/
-validate.loginRules = () => {
-    return [
-        body("account_email")
-            .trim()
-            .isEmail()
-            .normalizeEmail()
-            .withMessage("Please enter a valid email address."),
-        body("account_password")
             .trim()
             .notEmpty()
-            .withMessage("Password cannot be empty."),
+            .withMessage("Email is required.")
+            .isEmail()
+            .withMessage("Email is not valid."),
+        body("phone")
+            .optional({ checkFalsy: true })
+            .trim()
+            .isMobilePhone("any")
+            .withMessage("Phone number is not valid."),
+        body("address")
+            .optional({ checkFalsy: true })
+            .trim()
+            .isLength({ max: 100 })
+            .withMessage("Address must be under 100 characters."),
     ]
 }
 
-/* **************************************
- *  Check login data and return errors
- * **************************************/
-validate.checkLoginData = async (req, res, next) => {
+/* ***************************
+ *  Validation Error Handler
+ * ************************** */
+function checkRegData(req, res, next) {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
-        return res.render("account/login", {
-            title: "Login",
-            errors: errors.array(),
-            account_email: req.body.account_email,
-        })
+        req.flash("errors", errors.array())
+        return res.redirect("back")
     }
     next()
 }
 
-module.exports = validate
+function checkLoginData(req, res, next) {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+        req.flash("errors", errors.array())
+        return res.redirect("back")
+    }
+    next()
+}
+
+function checkProfileData(req, res, next) {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+        req.flash("errors", errors.array())
+        return res.redirect("/account/profile")
+    }
+    next()
+}
+
+module.exports = {
+    registrationRules,
+    loginRules,
+    profileUpdateRules,
+    checkRegData,
+    checkLoginData,
+    checkProfileData,
+}

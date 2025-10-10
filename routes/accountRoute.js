@@ -22,6 +22,21 @@ router.post(
   utilities.handleErrors(accountController.accountLogin)
 )
 
+// Profile (Protected)
+router.get(
+  "/profile",
+  utilities.checkLogin,
+  utilities.handleErrors(accountController.buildProfileView)
+)
+
+router.post(
+  "/profile/update",
+  utilities.checkLogin,
+  regValidate.profileUpdateRules(),
+  regValidate.checkProfileData,
+  utilities.handleErrors(accountController.updateProfile)
+)
+
 // Account Management (Protected)
 router.get(
   "/",

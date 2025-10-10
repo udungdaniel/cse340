@@ -14,6 +14,7 @@ const accountRoutes = require("./routes/accountRoute");
 const miscRoutes = require("./routes/misc");
 const utilities = require("./utilities");
 const errorHandler = require("./middleware/errorHandler");
+const profileRoute = require("./routes/profileRoute");
 
 const app = express();
 
@@ -57,6 +58,7 @@ app.use(staticRoutes);
 app.use("/inv", inventoryRoutes);
 app.use("/account", accountRoutes);
 app.use("/", miscRoutes);
+app.use("/account/profile", profileRoute);
 app.get("/", utilities.handleErrors(baseController.buildHome));
 
 // 404 handler

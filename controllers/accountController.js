@@ -15,7 +15,7 @@ accountController.buildLogin = async (req, res, next) => {
       title: "Login",
       nav,
       errors: req.flash("errors") || [],
-      message: req.flash("success")[0] || ""
+      message: req.flash("success")[0] || null,
     })
   } catch (err) {
     next(err)
@@ -35,7 +35,7 @@ accountController.buildRegister = async (req, res, next) => {
       message: req.flash("success")[0] || "",
       account_firstname: "",
       account_lastname: "",
-      account_email: ""
+      account_email: "",
     })
   } catch (err) {
     next(err)
@@ -53,23 +53,31 @@ accountController.registerAccount = async (req, res, next) => {
 
     if (result && result.account_id) {
       req.flash("success", "Registration successful! Please log in.")
-      res.redirect("/account/login")
-    } else {
-      const nav = await utilities.getNav()
-      req.flash("errors", [{ msg: "Registration failed. Please try again." }])
-      res.status(500).render("account/register", {
-        title: "Register",
-        nav,
-        errors: req.flash("errors"),
-        message: "",
-        account_firstname: firstname,
-        account_lastname: lastname,
-        account_email: email
-      })
+      return res.redirect("/account/login")
     }
+
+    const nav = await utilities.getNav()
+    res.status(500).render("account/register", {
+      title: "Register",
+      nav,
+      errors: [{ msg: "Registration failed. Please try again." }],
+      message: "",
+      account_firstname: firstname,
+      account_lastname: lastname,
+      account_email: email,
+    })
   } catch (error) {
     console.error("Registration Error:", error)
-    next(error)
+    const nav = await utilities.getNav()
+    res.status(500).render("account/register", {
+      title: "Register",
+      nav,
+      errors: [{ msg: "An unexpected error occurred: " + error.message }],
+      message: "",
+      account_firstname: req.body.firstname,
+      account_lastname: req.body.lastname,
+      account_email: req.body.email,
+    })
   }
 }
 
@@ -96,7 +104,7 @@ accountController.accountLogin = async (req, res, next) => {
       {
         userId: account.account_id,
         username: account.account_firstname,
-        account_type: account.account_type
+        account_type: account.account_type,
       },
       process.env.ACCESS_TOKEN_SECRET,
       { expiresIn: "1h" }
@@ -125,11 +133,61 @@ accountController.buildAccountManagement = async (req, res, next) => {
       nav,
       userName: account.account_firstname,
       account_type: account.account_type,
-      message: req.flash("success")[0] || "",
-      errors: req.flash("errors") || []
+      message: req.flash("success")[0] || null,
+      errors: req.flash("errors") || [],
     })
   } catch (error) {
     next(error)
+  }
+}
+
+/* ***************************
+ *  Build Profile View
+ * ************************** */
+accountController.buildProfileView = async (req, res, next) => {
+  try {
+    const nav = await utilities.getNav()
+    const userId = req.userId
+    const account = await accountModel.getAccountById(userId)
+
+    res.render("account/profile", {
+      title: "My Profile",
+      nav,
+      account,
+      errors: req.flash("errors") || [],
+      message: req.flash("success")[0] || null,
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
+/* ***************************
+ *  Update Profile
+ * ************************** */
+accountController.updateProfile = async (req, res, next) => {
+  try {
+    const userId = req.userId
+    const { account_firstname, account_email, phone, address } = req.body
+
+    if (!account_firstname || !account_email) {
+      req.flash("errors", [{ msg: "Name and email are required." }])
+      return res.redirect("/account/profile")
+    }
+
+    const updated = await accountModel.updateAccount(userId, account_firstname, account_email, phone, address)
+
+    if (updated) {
+      req.flash("success", "Profile updated successfully!")
+    } else {
+      req.flash("errors", [{ msg: "Profile update failed. Try again." }])
+    }
+
+    res.redirect("/account/profile")
+  } catch (error) {
+    console.error("Profile Update Error:", error)
+    req.flash("errors", [{ msg: "An unexpected error occurred: " + error.message }])
+    res.redirect("/account/profile")
   }
 }
 

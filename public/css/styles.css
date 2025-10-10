@@ -898,3 +898,231 @@ small {
   margin-top: 0.25rem;
   color: #555;
 }
+
+/* ==========================
+  Login & Register Enhancements
+   ========================== */
+
+.auth-container {
+  max-width: 450px;
+  margin: 5rem auto;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  padding: 2.5rem 2rem;
+  animation: fadeIn 0.6s ease-out;
+}
+
+.auth-container h1 {
+  text-align: center;
+  color: #0d47a1;
+  margin-bottom: 1.5rem;
+  font-size: 1.9rem;
+  letter-spacing: 0.5px;
+}
+
+.auth-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.auth-container label {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.4rem;
+}
+
+.auth-container input[type="text"],
+.auth-container input[type="email"],
+.auth-container input[type="password"] {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.25s ease;
+}
+
+.auth-container input:focus {
+  border-color: #0d47a1;
+  box-shadow: 0 0 0 4px rgba(13, 71, 161, 0.15);
+  outline: none;
+}
+
+.auth-container .btn-submit {
+  background: linear-gradient(90deg, #0d47a1, #1565c0);
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  padding: 0.9rem;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.auth-container .btn-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(13, 71, 161, 0.2);
+}
+
+.auth-container .alternate-action {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.95rem;
+}
+
+.auth-container .alternate-action a {
+  color: #1565c0;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-container .alternate-action a:hover {
+  text-decoration: underline;
+}
+
+/* Flash message boxes */
+.auth-container .flash-messages {
+  margin-bottom: 1rem;
+  padding: 0.9rem 1rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  text-align: center;
+  animation: slideDown 0.4s ease-out;
+}
+
+.auth-container .flash-messages.error {
+  background-color: #fdecea;
+  color: #c62828;
+  border: 1px solid #f5c6cb;
+}
+
+.auth-container .flash-messages.success {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #a5d6a7;
+}
+
+/* Animation for smooth appearance */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================
+   User Profile Page Styles
+   ========================== */
+
+#profile-view {
+  max-width: 480px;
+  margin: 4rem auto;
+  padding: 2rem 2.5rem;
+  background-color: #f9f9ff;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+#profile-view h1 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: darkblue;
+  font-size: 1.8rem;
+}
+
+.profile-form .form-group {
+  margin-bottom: 1.2rem;
+}
+
+.profile-form label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.profile-form input {
+  width: 100%;
+  padding: 0.7rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.profile-form input:focus {
+  border-color: #004080;
+  box-shadow: 0 0 5px rgba(0, 64, 128, 0.2);
+  outline: none;
+  background-color: #fff;
+}
+
+.profile-form .form-actions {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.profile-form .btn {
+  background-color: #004080;
+  color: #fff;
+  border: none;
+  padding: 0.7rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+.profile-form .btn:hover {
+  background-color: #002850;
+}
+
+/* Flash messages */
+.flash-messages {
+  padding: 0.8rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+.flash-messages.success {
+  background-color: #e8f5e9;
+  border: 1px solid #a5d6a7;
+  color: #2e7d32;
+}
+
+.flash-messages.error {
+  background-color: #fdecea;
+  border: 1px solid #f5c6cb;
+  color: #c62828;
+}
+
+/* Responsive tweak */
+@media (max-width: 600px) {
+  #profile-view {
+    margin: 2rem 1rem;
+    padding: 1.5rem;
+  }
+}
